@@ -1,12 +1,10 @@
 package ru.netology.repository;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
-import ru.netology.manager.ProductManager;
 
 public class ProductRepositoryTest {
 
@@ -17,7 +15,7 @@ public class ProductRepositoryTest {
     Product smartphone2 = new Smartphone(5, "Galaxy S 10", 34_000, "Samsung");
 
     @Test
-    public void test() {
+    public void shouldRemoveById() {
         ProductRepository repo = new ProductRepository();
         repo.add(book1);
         repo.add(book2);
@@ -31,4 +29,30 @@ public class ProductRepositoryTest {
 
     }
 
+    @Test
+    public void shouldDeleteNotExistingId() {
+        ProductRepository repo = new ProductRepository();
+        repo.add(book1);
+        repo.add(book2);
+        repo.add(book3);
+
+       Assertions.assertThrows(NotFoundException.class, () -> {
+           repo.removeById(61);
+       });
+    }
+
+    @Test
+    public void shouldDeleteExistingId() {
+        ProductRepository repo = new ProductRepository();
+        repo.add(book1);
+        repo.add(book2);
+        repo.add(book3);
+
+        repo.removeById(3);
+
+        Product[] expected = {book1, book2};
+        Product[] actual = repo.getProducts();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
