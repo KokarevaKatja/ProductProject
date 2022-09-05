@@ -16,6 +16,8 @@ public class ProductManagerTest {
     Product book1 = new Book(1, "Война и мир", 250, "Лев Толстой");
     Product book2 = new Book(2, "Отцы и дети", 340, "Иван Тургенев");
     Product book3 = new Book(3, "Собачье сердце", 190, "Михаил Булгаков");
+    Product book4 = new Book(7, "Собачье сердце", 230, "Михаил Булгаков");
+    Product book5 = new Book(12, "Мастер и Маргарита", 376, "Михаил Булгаков");
     Product smartphone1 = new Smartphone(4, "iPhone 11", 75_000, "Apple");
     Product smartphone2 = new Smartphone(5, "Galaxy S 10", 34_000, "Samsung");
 
@@ -68,6 +70,33 @@ public class ProductManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldFindOnlyOneBook() {
+        manager.add(book5);
+
+        Product[] expected = {book5};
+        Product[] actual = manager.searchBy("Мастер и Маргарита");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindSeveralBooks() {
+        manager.add(book4);
+
+        Product[] expected = {book3, book4};
+        Product[] actual = manager.searchBy("Собачье сердце");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindNoBooks() {
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("Дар");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
 
 
